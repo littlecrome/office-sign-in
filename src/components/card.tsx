@@ -8,22 +8,23 @@ export const Card = (
         setPeopleLoggedIn: ( value: Person[] ) => void
     }
 ) => {
-    return <CardSimple isHighlighted={ peopleLoggedIn.includes(person) }>
-        <h2 className="text-2xl">{ person.name }</h2>
-        <button onClick={() => {
+    return <CardSimple isHighlighted={ peopleLoggedIn.includes(person) } onClick={() => {
         if ( peopleLoggedIn.includes( person ) ) {
             setPeopleLoggedIn( peopleLoggedIn.filter( (name) => name !== person ) );
         } else {
             setPeopleLoggedIn( [ ...peopleLoggedIn, person ] );
         }
-        }}>Sign { peopleLoggedIn.includes( person ) ? 'out' : 'in' }</button>
+        }}>
+        <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{ person.name }</h2>
+        <p className='font-normal text-gray-700 dark:text-gray-400'>{ person['job title'] }</p>
+        <p className='font-normal text-gray-700 dark:text-gray-400'>Sign { peopleLoggedIn.includes( person ) ? 'out' : 'in' }</p>
     </CardSimple>
 }
 
 export const CardSimple = (
-    { children, isHighlighted = false }: React.PropsWithChildren & { isHighlighted?: boolean }
+    { children, isHighlighted = false, onClick }: React.PropsWithChildren & { isHighlighted?: boolean, onClick: () => void }
 ) => {
-    return <div className={ (isHighlighted ? 'border-cyan-400' : 'border-gray-200') + ' card basis-40 min-h-40 border-2 p-5 rounded-md' }>
+    return <div onClick={() => onClick()} className={ (isHighlighted ? 'border-cyan-400' : 'border-gray-200') + ' card basis-40 min-h-40 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700' }>
         {children}
     </div>
 
