@@ -1,8 +1,8 @@
 export const Button = (
-    { children, variant = 'primary', extraClasses = '', onClick } :
+    { children, variant = 'primary', alignment = '', onClick } :
     React.PropsWithChildren & {
         variant?: 'primary' | 'secondary' | 'ghost'
-        extraClasses?: string,
+        alignment?: string,
         onClick: () => void
     }
 ) => {
@@ -20,7 +20,11 @@ export const Button = (
             break;
     }
 
-    return <button onClick={ onClick } className={ classNames + ' ' + extraClasses }>
+    if(alignment == "end") {
+        classNames += ' self-end';
+    }
+
+    return <button onClick={ onClick } className={ classNames }>
         {children}
     </button>
 }

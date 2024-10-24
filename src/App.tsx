@@ -1,9 +1,11 @@
-import { useState } from 'react'
-import people from './data/people.json'
-import { Card } from './components/card'
-import { Button } from './components/button'
-import { Alert } from './components/alert'
-import { ModalSimple } from './components/modal'
+import { useState } from 'react';
+import people from './data/people.json';
+import { Card } from './components/card';
+import { Button } from './components/button';
+import { Alert } from './components/alert';
+import { ModalSimple } from './components/modal';
+import { Toggle } from './components/toggle';
+import { Input } from './components/input';
 
 export type Person = typeof people[0];
 
@@ -30,29 +32,23 @@ function App() {
 
       <h1 className="text-4xl text-blue-500">Hello</h1>
       <p className="text-2xl">Please sign in</p>
+
       <div className='flex gap-4'>
 
-      <Button onClick={() => {
+        <Button onClick={() => {
             setPopupIsOpen( true );
-          }}>Add a guess</Button>
+          }}>Add a guest</Button>
 
-        <ModalSimple isOpen={ popupIsOpen }>
-            <Button variant='ghost' extraClasses='self-end' onClick={() => {
-                setPopupIsOpen( false );
-              }}>Close</Button>
-            <h2 className='text-1xl'>Please enter the guest name and company</h2>
+        <ModalSimple title="Please enter the guest name and company" isOpen={ popupIsOpen } onClose={() => {
+            setPopupIsOpen( false );
+            setError( false );
+          }}>
             <Alert isShown={ error } variant="error"><span className="font-medium">Error!</span> Please fill in all the required fields and try again.</Alert>
-            <input type="text" required placeholder="First name" className='border-2 rounded-md py-2 px-4' value={ firstNameValue } onChange={(event) => {
-              setFirstNameValue( event.target.value )
-            }} />
-            <input type="text" required placeholder="Last name" className='border-2 rounded-md py-2 px-4' value={ lastNameValue } onChange={(event) => {
-              setLastNameValue( event.target.value )
-            }} />
-            <input type="text" required placeholder="Company" className='border-2 rounded-md py-2 px-4' value={ companyValue } onChange={(event) => {
-              setCompanyValue( event.target.value )
-            }} />
+            <Input placeholder="First name" value={ firstNameValue } onChange={(event) => setFirstNameValue(event.target.value)} />
+            <Input placeholder="Last name" value={ firstNameValue } onChange={(event) => setLastNameValue(event.target.value)} />
+            <Input placeholder="Company" value={ firstNameValue } onChange={(event) => setCompanyValue(event.target.value)} />
 
-            <button type="submit" className='text-white bg-blue-500 hover:bg-sky-700 rounded-md py-2 px-4' onClick={() => {
+            <Button onClick={() => {
               if(firstNameValue != '' && lastNameValue != '' && companyValue != ""){
                 const newGuest = { name: firstNameValue + " " + lastNameValue , "first name": firstNameValue, "last name": lastNameValue, "job title": companyValue };
                 setGuests( [...guests, newGuest ] );
@@ -63,26 +59,18 @@ function App() {
                 setPopupIsOpen( false );
                 setError( false );
               } else {
-                console.log('Submitted')
                 setError( true );
               }
-            }}>Add</button>
+            }}>Add</Button>
         </ModalSimple>
-
       </div>
 
       <div className='flex gap-4'>
         <input type="search" placeholder="Search for a name" className='border-2 rounded-md py-2 px-4' value={ searchValue } onChange={(event) => {
-            setSearchValue( event.target.value );
-          }}/>
+          setSearchValue( event.target.value );
+        }}/>
 
-        <label className="inline-flex items-center cursor-pointer">
-          <input type="checkbox" className="sr-only peer" onChange={(event) => {
-              setShowSignedInPeople( event.target.checked );
-            }}/>
-          <div className="relative w-11 h-6 bg-gray-200 hover:bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-          <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Signed in</span>
-        </label>
+        <Toggle onChange={(event) => setShowSignedInPeople(event.target.checked)}>Signed in</Toggle>
       </div>
 
       <div className='flex flex-wrap gap-4'>
