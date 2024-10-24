@@ -2,6 +2,7 @@ import { useState } from 'react'
 import people from './data/people.json'
 import { Card } from './components/card'
 import { Button } from './components/button'
+import { Alert } from './components/alert'
 import { ModalSimple } from './components/modal'
 
 export type Person = typeof people[0];
@@ -15,6 +16,7 @@ function App() {
   const [ companyValue, setCompanyValue ] = useState( '' );
   const [ guests, setGuests ] = useState( [] as Person[] );
   const [ popupIsOpen, setPopupIsOpen ] = useState( false );
+  const [ error, setError ] = useState( false );
 
   const peopleList = [...people, ...guests ];
 
@@ -36,26 +38,34 @@ function App() {
 
         <ModalSimple isOpen={ popupIsOpen }>
             <Button variant='ghost' extraClasses='self-end' onClick={() => {
-                setPopupIsOpen( true );
+                setPopupIsOpen( false );
               }}>Close</Button>
-            <input type="text" placeholder="First name" className='border-2 rounded-md py-2 px-4' value={ firstNameValue } onChange={(event) => {
+            <h2 className='text-1xl'>Please enter the guest name and company</h2>
+            <Alert isShown={ error } variant="error"><span className="font-medium">Error!</span> Please fill in all the required fields and try again.</Alert>
+            <input type="text" required placeholder="First name" className='border-2 rounded-md py-2 px-4' value={ firstNameValue } onChange={(event) => {
               setFirstNameValue( event.target.value )
             }} />
-            <input type="text" placeholder="Last name" className='border-2 rounded-md py-2 px-4' value={ lastNameValue } onChange={(event) => {
+            <input type="text" required placeholder="Last name" className='border-2 rounded-md py-2 px-4' value={ lastNameValue } onChange={(event) => {
               setLastNameValue( event.target.value )
             }} />
-            <input type="text" placeholder="Company" className='border-2 rounded-md py-2 px-4' value={ companyValue } onChange={(event) => {
+            <input type="text" required placeholder="Company" className='border-2 rounded-md py-2 px-4' value={ companyValue } onChange={(event) => {
               setCompanyValue( event.target.value )
             }} />
 
             <button type="submit" className='text-white bg-blue-500 hover:bg-sky-700 rounded-md py-2 px-4' onClick={() => {
-              const newGuest = { name: firstNameValue + " " + lastNameValue , "first name": firstNameValue, "last name": lastNameValue, "job title": companyValue };
-              setGuests( [...guests, newGuest ] );
-              setPeopleLoggedIn( [ ...peopleLoggedIn, newGuest ] );
-              setCompanyValue( '' );
-              setLastNameValue( '' );
-              setFirstNameValue( '' );
-              setPopupIsOpen( false );
+              if(firstNameValue != '' && lastNameValue != '' && companyValue != ""){
+                const newGuest = { name: firstNameValue + " " + lastNameValue , "first name": firstNameValue, "last name": lastNameValue, "job title": companyValue };
+                setGuests( [...guests, newGuest ] );
+                setPeopleLoggedIn( [ ...peopleLoggedIn, newGuest ] );
+                setCompanyValue( '' );
+                setLastNameValue( '' );
+                setFirstNameValue( '' );
+                setPopupIsOpen( false );
+                setError( false );
+              } else {
+                console.log('Submitted')
+                setError( true );
+              }
             }}>Add</button>
         </ModalSimple>
 
