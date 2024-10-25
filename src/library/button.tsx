@@ -1,3 +1,5 @@
+import React from "react";
+
 export const Button = (
     { children, variant = 'primary', alignment = '', onClick } :
     React.PropsWithChildren & {

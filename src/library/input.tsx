@@ -1,6 +1,8 @@
+import React from "react";
+
 export const Input = (
-    { children, placeholder = '', value, onChange } :
-    React.PropsWithChildren & {
+    { placeholder = '', value, onChange } :
+    {
         placeholder?: string,
         value: string,
         onChange: (event: React.ChangeEvent<HTMLInputElement>) => void

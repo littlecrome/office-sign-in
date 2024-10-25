@@ -1,6 +1,8 @@
+import React from "react";
+
 import { Button } from './button';
 
-export const ModalSimple = (
+export const Modal = (
     { children, title= '', onClose, isOpen = false }: React.PropsWithChildren & {
         title?: string,
         onClose: () => void
@@ -13,7 +15,7 @@ export const ModalSimple = (
                 <h2 className='text-1xl'>{ title }</h2>
                 <Button variant='ghost' alignment='end' onClick={onClose}>
                     <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                     </svg>
                     <span className="sr-only">Close modal</span>
                 </Button>

@@ -1,3 +1,5 @@
+import React from "react";
+
 export const Alert = (
     { children, variant = 'info', isShown = true } :
     React.PropsWithChildren & {
